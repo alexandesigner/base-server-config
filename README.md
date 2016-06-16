@@ -59,7 +59,9 @@ server {
 
 ``sudo npm install -g n``
 
-``sudo n stable`` // Com 'list' voce pode escolher a versão
+``sudo n stable`` 
+
+_Com 'list' voce pode escolher a versão_
 
 ## MONGO
 
