@@ -30,7 +30,6 @@ server {
     server_name domain.com;
     access_log /var/log/nginx/domain.dev.access.log;
     error_log /var/log/nginx/domain.dev.error.log;
-    root /etc/share/nginx/html/ADMSISMNC;
     location / {
         proxy_pass http://domain.com;
         proxy_http_version 1.1;
