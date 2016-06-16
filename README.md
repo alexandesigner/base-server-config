@@ -68,4 +68,6 @@ _Com 'list' voce pode escolher a versão_
 
 ``sudo apt-get update``
 
+``sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys```
+
 ``sudo apt-get install mongodb-org``
