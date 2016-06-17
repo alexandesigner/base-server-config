@@ -1,73 +1,85 @@
-# Base server config (VPS)
-Instruções básicas para configurar um servidor usando Ubuntu 14
+# Base Server Config (Meteor)
 
-## UNBUNTU 14
+Instruções básicas para configurar um servidor usando Ubuntu 14.04 LTS
 
-``sudo apt-get update``
+## Ubuntu 14.04 LTS
+
+``$ sudo apt-get update``
+
+## Meteor
+
+``$ curl https://install.meteor.com/ | sh``
 
 ## NGINX
 
-``sudo apt-get install nginx``
+```
+$ sudo apt-get install nginx
+$ ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//'
+$ sudo service nginx start
+```
 
-``ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//'``
+## Configurando um projeto básico
 
-``sudo service nginx start``
+```
+$ cd /etc/nginx/sites-available
+$ nano <nome do projeto>
+```
 
-## CONFIGURANDO UM PROJETO NO NGINX
-
-``cd /etc/nginx/sites-available``
-
-``nano <nome do projeto, o mesmo que ta no MUP OU DOCKER>``
-
-**Colar o texto abaixo alterando os dominios para o nome que ira ficar**
+**Colar dentro do arquivo de configuração criado**
 
 ```
 upstream domain.com {
-    server domain.com:3001;
+    server 127.0.0.1:4010;
 }
 server {
-    listen *:80;
-    server_name domain.com;
+    listen 80;
+    server_name www.domain.com;
+    return 301 $scheme://domain.com$request_uri;
+    
     access_log /var/log/nginx/domain.dev.access.log;
     error_log /var/log/nginx/domain.dev.error.log;
+
     location / {
-        proxy_pass http://domain.com;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header X-Forwarded-For $remote_addr;
+	    proxy_pass http://domain.com;
+	    proxy_http_version 1.1;
+	    proxy_set_header Host domain.com;
+	    proxy_set_header Upgrade $http_upgrade;
+	    proxy_set_header Connection 'upgrade';
+	    proxy_set_header X-Forwarded-For $remote_addr;
     }
 }
 ```
 
+**Fazendo uma cópia do sites-available para sites-enabled**
 
-``cd ~``
+```
+$ cd ~
+$ cd /etc/nginx/sites-enabled``
+$ ln -s /etc/nginx/sites-avaliable/<nome do projeto> /etc/nginx/sites-enabled/<nome do projeto>
+$ sudo service nginx restart
+```
 
-``cd /etc/nginx/sites-enabled``
+## Node JS 
 
-``ln -s /etc/nginx/sites-avaliable/<nome do projeto, o mesmo que ta no MUP> /etc/nginx/sites-enabled/``
-
-``sudo service nginx restart``
-
-## NODE 
 **Versão acima ou igual de 0.10.40**
 
-``sudo apt-get install npm``
+```
+$ sudo apt-get install npm
+$ sudo npm cache clean
+$ sudo npm install -g n
+$ sudo n stable
+```
 
-``sudo npm cache clean``
+Usando ``$ sudo n stable list`` Você pode escolher a versão
 
-``sudo npm install -g n``
+## Mongo
 
-``sudo n stable`` 
+```
+$ echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+$ sudo apt-get update
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys
+$ sudo apt-get install mongodb-org
+```
+Se de alguma forma não estiver localizando as configurações locais do mongo, rodar:
 
-_Com 'list' voce pode escolher a versão_
-
-## MONGO
-
-``echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list`` 
-
-``sudo apt-get update``
-
-``sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys```
-
-``sudo apt-get install mongodb-org``
+``$ export LC_ALL=C``
