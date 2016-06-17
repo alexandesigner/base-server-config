@@ -54,7 +54,7 @@ server {
 
 ```
 $ cd ~
-$ cd /etc/nginx/sites-enabled``
+$ cd /etc/nginx/sites-enabled
 $ ln -s /etc/nginx/sites-avaliable/<nome do projeto> /etc/nginx/sites-enabled/<nome do projeto>
 $ sudo service nginx restart
 ```
@@ -83,3 +83,10 @@ $ sudo apt-get install mongodb-org
 Se de alguma forma não estiver localizando as configurações locais do mongo, rodar:
 
 ``$ export LC_ALL=C``
+
+** Helpers **
+
+```
+$ ps wuax | grep <name>
+$ htop
+```
