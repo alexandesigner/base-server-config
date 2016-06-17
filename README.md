@@ -84,7 +84,7 @@ Se de alguma forma não estiver localizando as configurações locais do mongo, 
 
 ``$ export LC_ALL=C``
 
-** Helpers **
+**Helpers**
 
 ```
 $ ps wuax | grep <name>
