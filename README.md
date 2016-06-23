@@ -90,3 +90,8 @@ Se de alguma forma não estiver localizando as configurações locais do mongo, 
 $ ps wuax | grep <name>
 $ htop
 ```
+
+**Kill Meteor servers**
+```
+$ kill -9 `ps ax | grep node | grep meteor | awk '{print $1}'`
+```
