@@ -39,7 +39,7 @@ server {
     error_log /var/log/nginx/dominio.dev.error.log;
 
     location / {
-        proxy_pass http://dominio.com.br;
+        proxy_pass http://dominio.com;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
