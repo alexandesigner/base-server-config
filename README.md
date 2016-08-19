@@ -28,26 +28,25 @@ $ nano <nome do projeto>
 **Colar dentro do arquivo de configuração criado**
 
 ```
-upstream domain.com {
-    server 127.0.0.1:4010;
+upstream dominio.com {
+    server www.dominio.com:<port>;
 }
 server {
     listen 80;
-    server_name www.domain.com;
-    return 301 $scheme://domain.com$request_uri;
+    server_name dominio.com;
     
-    access_log /var/log/nginx/domain.dev.access.log;
-    error_log /var/log/nginx/domain.dev.error.log;
+    access_log /var/log/nginx/dominio.dev.access.log;
+    error_log /var/log/nginx/dominio.dev.error.log;
 
     location / {
-	    proxy_pass http://domain.com;
-	    proxy_http_version 1.1;
-	    proxy_set_header Host domain.com;
-	    proxy_set_header Upgrade $http_upgrade;
-	    proxy_set_header Connection 'upgrade';
-	    proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_pass http://dominio.com.br;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header X-Forwarded-For $remote_addr;
     }
 }
+
 ```
 
 **Fazendo uma cópia do sites-available para sites-enabled**
@@ -55,7 +54,7 @@ server {
 ```
 $ cd ~
 $ cd /etc/nginx/sites-enabled
-$ ln -s /etc/nginx/sites-avaliable/<nome do projeto> /etc/nginx/sites-enabled/<nome do projeto>
+$ sudo ln -s /etc/nginx/sites-available/<nome do projeto> /etc/nginx/sites-enabled/
 $ sudo service nginx restart
 ```
 
