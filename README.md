@@ -28,18 +28,38 @@ $ nano <nome do projeto>
 **Colar dentro do arquivo de configuração criado**
 
 ```
-upstream dominio.com {
-    server www.dominio.com:<port>;
+# domain
+upstream domain.com.br {
+    server 50.116.20.153:3009;
 }
 server {
     listen 80;
-    server_name dominio.com;
-    
-    access_log /var/log/nginx/dominio.dev.access.log;
-    error_log /var/log/nginx/dominio.dev.error.log;
+    listen [::]:80;
+
+    server_name domain.com.br;
+
+    access_log /var/log/nginx/domain.dev.access.log;
+    error_log /var/log/nginx/domain.dev.error.log;
 
     location / {
-        proxy_pass http://dominio.com;
+        proxy_pass http://domain.com.br;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header X-Forwarded-For $remote_addr;
+    }
+}
+
+# www to domain
+server {
+    listen 80;
+    server_name www.domain.com.br;
+
+    access_log /var/log/nginx/domain.dev.access.log;
+    error_log /var/log/nginx/domain.dev.error.log;
+
+    location / {
+        proxy_pass http://domain.com.br;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -52,13 +72,12 @@ server {
 **Fazendo uma cópia do sites-available para sites-enabled**
 
 ```
-$ cd ~
-$ cd /etc/nginx/sites-enabled
+$ cd .. && /etc/nginx/sites-enabled
 $ sudo ln -s /etc/nginx/sites-available/<nome do projeto> /etc/nginx/sites-enabled/
 $ sudo service nginx restart
 ```
 
-## Node JS 
+## NodeJS
 
 **Versão acima ou igual de 0.10.40**
 
