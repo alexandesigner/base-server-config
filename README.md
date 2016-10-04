@@ -30,7 +30,7 @@ $ nano <nome do projeto>
 ```
 # domain
 upstream domain.com.br {
-    server 50.116.20.153:3009;
+    server <ip>:<port>;
 }
 server {
     listen 80;
