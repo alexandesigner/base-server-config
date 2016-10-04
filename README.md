@@ -38,22 +38,9 @@ server {
 
     server_name domain.com.br;
 
-    access_log /var/log/nginx/domain.dev.access.log;
-    error_log /var/log/nginx/domain.dev.error.log;
-
-    location / {
-        proxy_pass http://domain.com.br;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header X-Forwarded-For $remote_addr;
+    if ($http_host ~ "^www\.domain\.com.br$"){ 
+      rewrite ^(.*)$ http://domain.com.br$1 redirect; 
     }
-}
-
-# www to domain
-server {
-    listen 80;
-    server_name www.domain.com.br;
 
     access_log /var/log/nginx/domain.dev.access.log;
     error_log /var/log/nginx/domain.dev.error.log;
@@ -66,7 +53,6 @@ server {
         proxy_set_header X-Forwarded-For $remote_addr;
     }
 }
-
 ```
 
 **Fazendo uma cópia do sites-available para sites-enabled**
