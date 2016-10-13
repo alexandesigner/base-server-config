@@ -38,8 +38,14 @@ server {
 
     server_name domain.com.br;
 
-    if ($http_host ~ "^www\.domain\.com.br$"){ 
+    # Redirect 301
+    if ($http_host ~ "^www\.domain\.com.br$"){
       rewrite ^(.*)$ http://domain.com.br$1 redirect; 
+    }
+
+    # SSL redirect https
+    if ($http_cf_visitor ~ '{"scheme":"http"}') {
+      return 301 https://$server_name$request_uri;
     }
 
     access_log /var/log/nginx/domain.dev.access.log;
